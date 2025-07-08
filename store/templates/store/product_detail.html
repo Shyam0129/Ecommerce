@@ -1,0 +1,77 @@
+{% extends 'store/base.html' %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block content %}
+    <div class="container mx-auto p-6">
+        {% if product %}
+            <div class="bg-white shadow-md rounded-lg overflow-hidden flex flex-col md:flex-row">
+                <div class="w-full md:w-1/3 bg-gray-300 p-4 text-center">
+                    <h2 class="text-xl font-semibold text-gray-900">{{ product.name }}</h2>
+                    <p class="text-gray-600 mt-2">#{{ product.id }}</p>
+                </div>
+                <div class="p-6 w-full md:w-2/3">
+                    <h3 class="text-lg font-semibold">Description:</h3>
+                    <p class="text-gray-600 mt-2">{{ product.description|default:"No description available" }}</p>
+                    <p class="text-yellow-500 mt-2">Rating: {% for i in "xxxxx"|make_list %}{% if forloop.counter <= product.rating|default:3 %}<span class="text-yellow-500 text-xl">★</span>{% else %}<span class="text-gray-300 text-xl">★</span>{% endif %}{% endfor %} {{ product.rating|default:3 }} out of 5</p>
+                    <a href="#reviews" class="text-blue-600 mt-2 inline-block hover:underline text-lg">View All Reviews</a>
+                    <p class="text-green-600 font-bold mt-2">Price: ₹{{ product.price }}</p>
+                    <div class="flex items-center mt-3">
+                        <select name="quantity" id="quantity-select-{{ product.id }}" class="border p-1">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                        <form method="post" action="{% url 'store:add_to_cart' product.id %}" class="ml-3">
+                            {% csrf_token %}
+                            <input type="hidden" name="quantity" id="hidden-quantity-{{ product.id }}" value="1">
+                            <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Add to Cart</button>
+                        </form>
+                    </div>
+                    <form method="post" action="{% url 'store:buy_now' product.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 mt-4">Buy Now</button>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <p class="text-center text-gray-600">Product not found.</p>
+        {% endif %}
+    </div>
+    <script>
+        function updateQuantity(productId, change) {
+            let quantityInput = document.getElementById(`quantity-${productId}`);
+            let hiddenQuantity = document.getElementById(`hidden-quantity-${productId}`);
+            let quantity = parseInt(quantityInput.value) + change;
+            if (quantity >= 1) {
+                quantityInput.value = quantity;
+                hiddenQuantity.value = quantity;
+            }
+        }
+    </script>
+    {% if request.user.is_authenticated %}
+        <div class="container mx-auto p-6">
+            <h3 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Add Review</h3>
+            <form method="post" action="{% url 'store:write_review' category product.id %}">
+                {% csrf_token %}
+                <label for="rating" class="block text-gray-700 text-sm font-bold mb-2">Rating (1-5)</label>
+                <input type="number" id="rating" name="rating" min="1" max="5" class="w-full p-2 border rounded mb-4" required>
+                <label for="comment" class="block text-gray-700 text-sm font-bold mb-2">Comment</label>
+                <textarea id="comment" name="comment" class="w-full p-2 border rounded mb-4" required></textarea>
+                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Submit Review</button>
+            </form>
+        </div>
+    {% endif %}
+    <div id="reviews" class="container mx-auto p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">All Reviews</h2>
+        {% if reviews %}
+            {% for review in reviews %}
+                <div class="bg-white shadow-md rounded-lg p-4 mb-4">
+                    <p class="text-gray-700"><strong>{{ review.user.username }}</strong> - {{ review.rating }}★</p>
+                    <p class="text-gray-600 mt-2">{{ review.comment }}</p>
+                    <p class="text-sm text-gray-500">{{ review.created_at }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-gray-600">No reviews yet.</p>
+        {% endif %}
+    </div>
+{% endblock %}

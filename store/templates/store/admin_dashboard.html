@@ -1,0 +1,19 @@
+{% extends 'store/base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+    <div class="container mx-auto p-6">
+        <h1 class="text-4xl font-bold text-blue-700 text-center mb-6">Admin Dashboard</h1>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Products for Sale</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for product in products %}
+                <div class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <div class="p-4">
+                        <h3 class="text-xl font-semibold text-gray-900">{{ product.name }}</h3>
+                        <p class="text-gray-600 mt-2">₹{{ product.price }}</p>
+                        <p class="text-yellow-500 mt-1">Rating: {% widthratio product.rating 1 5 %}★</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

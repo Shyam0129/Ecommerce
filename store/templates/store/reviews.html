@@ -1,0 +1,28 @@
+{% extends 'store/base.html' %}
+{% block title %}Reviews for {{ product.name }}{% endblock %}
+{% block content %}
+    <div class="container mx-auto p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Reviews for {{ product.name }}</h2>
+        <nav class="text-sm mb-4">
+            <a href="{% url 'store:home' %}" class="text-gray-600 hover:underline mx-2">Home</a> |
+            <a href="{% url 'store:books' %}" class="text-gray-600 hover:underline mx-2">Books</a> |
+            <a href="{% url 'store:shoes' %}" class="text-gray-600 hover:underline mx-2">Shoes</a> |
+            <a href="{% url 'store:profile' %}" class="text-gray-600 hover:underline mx-2">My Account</a> |
+            <a href="{% url 'store:cart_detail' %}" class="text-gray-600 hover:underline mx-2">Cart ({{ cart_item_count }})</a> |
+            <a href="{% url 'store:support' %}" class="text-gray-600 hover:underline mx-2">Support</a>
+        </nav>
+        {% for review in reviews %}
+            <div class="border p-4 mb-4">
+                <h3 class="text-lg font-semibold">{{ review.user.username }}</h3>
+                <p class="text-gray-600">{{ review.comment }}</p>
+                <p class="text-yellow-500">Rating: {% for i in review.rating|make_list %}★{% endfor %}</p>
+                <p class="text-sm text-gray-500">{{ review.created_at }}</p>
+            </div>
+        {% empty %}
+            <p class="text-center text-gray-600">No reviews available.</p>
+        {% endfor %}
+        <div class="text-center mt-6">
+            <a href="{% url 'store:write_review' product.category product.id %}" class="text-blue-600 hover:underline">Write a Product Review</a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'store/base.html' %}
+{% block title %}Email Verification{% endblock %}
+{% block content %}
+    <div class="container mx-auto p-6">
+        <h1 class="text-4xl font-bold text-blue-700 text-center mb-6">Email Verification</h1>
+        <div class="max-w-md mx-auto bg-white shadow-md rounded-lg p-6">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% if not verified %}
+                <p class="text-gray-600 mb-4">A verification code has been sent to your email. Please enter it below.</p>
+                <form method="post" action="{% url 'store:email_verification' username=username %}">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="verification_code" class="block text-gray-700 text-sm font-bold mb-2">Verification Code</label>
+                        <input type="text" id="verification_code" name="verification_code" class="w-full p-2 border rounded" required>
+                    </div>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Verify</button>
+                </form>
+            {% else %}
+                <h2 class="text-2xl font-semibold text-green-600 text-center mb-4">Congratulations! Your email is verified.</h2>
+                <p class="text-gray-600 mb-4 text-center">To continue, please enter the following details:</p>
+                <form method="post" action="{% url 'store:profile' %}">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="full_name" class="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
+                        <input type="text" id="full_name" name="full_name" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="phone" class="block text-gray-700 text-sm font-bold mb-2">Phone</label>
+                        <input type="text" id="phone" name="phone" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="address" class="block text-gray-700 text-sm font-bold mb-2">Address</label>
+                        <textarea id="address" name="address" class="w-full p-2 border rounded" required></textarea>
+                    </div>
+                    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Submit</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                if (this.querySelector('input[required]') && !this.querySelector('input[required]').value) {
+                    e.preventDefault();
+                    alert('Please fill out all required fields.');
+                }
+            });
+        });
+    </script>
+{% endblock %}

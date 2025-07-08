@@ -1,0 +1,40 @@
+{% extends 'store/base.html' %}
+{% block content %}
+    <div class="container mx-auto p-6">
+        <h1 class="text-4xl font-bold text-blue-700 text-center mb-8">Home Page</h1>
+        <div class="flex flex-row space-x-6">
+            <div class="w-1/2 bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 border-b-2 border-blue-200 pb-2">Books</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    {% for book in books %}
+                        <a href="{% url 'store:product_detail' book.id %}" class="block">
+                            <div class="bg-gray-50 p-4 rounded-md border border-gray-100 hover:bg-gray-100 transition-colors duration-200">
+                                <h3 class="text-lg font-medium text-gray-900">{{ book.name }}</h3>
+                                <p class="text-gray-600 mt-2">₹{{ book.price }}</p>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+                <div class="text-center">
+                    <a href="{% url 'store:books' %}" class="text-blue-600 hover:underline font-medium">View All Books</a>
+                </div>
+            </div>
+            <div class="w-1/2 bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 border-b-2 border-blue-200 pb-2">Shoes</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    {% for shoe in shoes %}
+                        <a href="{% url 'store:product_detail' shoe.id %}" class="block">
+                            <div class="bg-gray-50 p-4 rounded-md border border-gray-100 hover:bg-gray-100 transition-colors duration-200">
+                                <h3 class="text-lg font-medium text-gray-900">{{ shoe.name }}</h3>
+                                <p class="text-gray-600 mt-2">₹{{ shoe.price }}</p>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+                <div class="text-center">
+                    <a href="{% url 'store:shoes' %}" class="text-blue-600 hover:underline font-medium">View All Shoes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

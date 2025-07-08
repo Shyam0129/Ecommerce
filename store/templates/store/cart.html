@@ -1,0 +1,67 @@
+{% extends 'store/base.html' %}
+{% block content %}
+    <div class="container mx-auto p-6">
+        <h1 class="text-4xl font-bold text-blue-700 text-center mb-6">SHOPPING CART</h1>
+        {% if cart_items %}
+            <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr>
+                            <th class="p-2">Book</th>
+                            <th class="p-2">Description</th>
+                            <th class="p-2">Unit Price</th>
+                            <th class="p-2">Quantity</th>
+                            <th class="p-2">Subtotal</th>
+                            <th class="p-2">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                            <tr>
+                                <td class="p-2">
+                                    <div class="bg-gray-300 p-4 text-center">
+                                        <h2 class="text-xl font-semibold">{{ item.product.name }}</h2>
+                                        <p>#{{ item.product.id }}</p>
+                                    </div>
+                                </td>
+                                <td class="p-2">{{ item.product.name }}</td>
+                                <td class="p-2">₹{{ item.product.price }}</td>
+                                <td class="p-2">
+                                    <select name="quantity" onchange="updateCart('{{ item.id }}', this.value)" class="border p-1">
+                                        <option value="1" {% if item.quantity == 1 %}selected{% endif %}>1</option>
+                                        <option value="2" {% if item.quantity == 2 %}selected{% endif %}>2</option>
+                                        <option value="3" {% if item.quantity == 3 %}selected{% endif %}>3</option>
+                                    </select>
+                                </td>
+                                <td class="p-2">₹{{ item.subtotal }}</td>
+                                <td class="p-2">
+                                    <form method="post" action="{% url 'store:remove_from_cart' item.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="bg-red-600 text-white py-1 px-2 rounded hover:bg-red-700">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="text-right mt-4 p-4">
+                    <p class="text-xl font-bold">TOTAL AMOUNT: ₹{{ total }}</p>
+                    <a href="{% url 'store:checkout' %}" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 mt-2 inline-block">BUY NOW</a>
+                </div>
+            </div>
+        {% else %}
+            <div class="text-center py-10 bg-white shadow-md rounded-lg">
+                <p class="text-lg text-gray-600">Your cart is empty.</p>
+            </div>
+        {% endif %}
+    </div>
+    <script>
+        function updateCart(itemId, quantity) {
+            fetch(`/update_cart/${itemId}/`, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': '{{ csrf_token }}', 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `quantity=${quantity}`
+            }).then(response => window.location.href = '{% url "store:cart_detail" %}');
+        }
+    </script>
+{% endblock %}

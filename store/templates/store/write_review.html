@@ -1,0 +1,28 @@
+{% extends 'store/base.html' %}
+{% block title %}Write Review - {{ product.name }}{% endblock %}
+{% block content %}
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold mb-4">WRITE A REVIEW: {{ product.name }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label class="block text-gray-700">Rate the product:</label>
+                <div class="flex">
+                    {% for i in '★★★★★'|make_list %}
+                        <input type="radio" name="rating" value="{{ forloop.counter }}" required>
+                        <span class="text-yellow-500">{{ i }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">Add a headline:</label>
+                <input type="text" name="headline" class="border p-2 w-full" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">Write a review:</label>
+                <textarea name="review" class="border p-2 w-full h-32" required></textarea>
+            </div>
+            <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded">SUBMIT</button>
+        </form>
+    </div>
+{% endblock %}
