@@ -33,6 +33,7 @@
                 </table>
                 <form method="post" id="checkoutForm" action="{% url 'store:confirm_order' %}">
                     {% csrf_token %}
+                    <input type="text" name="shipping_address" placeholder="Enter shipping address" required class="w-full p-2 border rounded mb-4">
                     <button type="submit" class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Buy Now</button>
                 </form>
             {% else %}
@@ -40,26 +41,4 @@
             {% endif %}
         </div>
     </div>
-    <script>
-        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            if (confirm('Do you want to confirm the order?')) {
-                fetch('{% url "store:confirm_order" %}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-CSRFToken': '{{ csrf_token }}',
-                        'X-Confirmed': 'true'
-                    },
-                    body: ''
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.redirect) {
-                        window.location.href = data.redirect;
-                    }
-                });
-            }
-        });
-    </script>
 {% endblock %}

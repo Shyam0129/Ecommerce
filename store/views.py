@@ -121,13 +121,30 @@ def checkout(request):
 @login_required
 def confirm_order(request):
     logger.info("Confirm order view accessed")
-    if request.method == "POST" and request.headers.get('X-Confirmed') == 'true':
+    if request.method == "POST":
         cart_items = Cart.objects.filter(user=request.user)
-        if cart_items:
-            for item in cart_items:
-                Order.objects.create(user=request.user, product=item.product, quantity=item.quantity, total_amount=item.subtotal, shipping_address="Sample Address", status="Pending")
-            cart_items.delete()
-        return JsonResponse({'message': 'Order confirmed', 'redirect': '/profile/'})
+        if not cart_items.exists():
+            messages.error(request, "Your cart is empty.")
+            return redirect('store:cart_detail')
+        # Example: get shipping address from POST or user profile
+        shipping_address = request.POST.get('shipping_address', '')
+        if not shipping_address and hasattr(request.user, 'profile'):
+            shipping_address = request.user.profile.address
+        if not shipping_address:
+            messages.error(request, "Shipping address is required.")
+            return redirect('store:checkout')
+        for item in cart_items:
+            Order.objects.create(
+                user=request.user,
+                product=item.product,
+                quantity=item.quantity,
+                total_amount=item.quantity * item.product.price,
+                shipping_address=shipping_address,
+                status='Order Placed'
+            )
+        cart_items.delete()  # Clear cart after order
+        messages.success(request, "Order placed successfully!")
+        return redirect('store:order_history')
     return redirect('store:checkout')
 
 def login_view(request):

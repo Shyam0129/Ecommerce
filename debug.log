@@ -3100,3 +3100,65 @@ WARNING 2025-07-08 20:05:44,361 log Not Found: /.well-known/appspecific/com.chro
 INFO 2025-07-08 20:06:44,082 views Home view accessed
 WARNING 2025-07-08 20:06:44,354 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-07-08 20:06:54,994 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-07-08 20:18:06,593 views Cart detail view accessed
+WARNING 2025-07-08 20:18:06,888 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-07-08 20:18:07,843 views Shoes view accessed
+WARNING 2025-07-08 20:18:08,042 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-07-08 20:18:14,339 views Add to cart accessed for product 37
+INFO 2025-07-08 20:18:14,393 views Cart detail view accessed
+WARNING 2025-07-08 20:18:14,516 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-07-08 20:18:18,406 views Update cart accessed for item 30
+INFO 2025-07-08 20:18:18,446 views Cart detail view accessed
+INFO 2025-07-08 20:18:18,488 views Cart detail view accessed
+WARNING 2025-07-08 20:18:18,566 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-07-08 20:18:23,272 views Checkout view accessed
+WARNING 2025-07-08 20:18:23,538 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-07-08 20:18:31,388 views Confirm order view accessed
+ERROR 2025-07-08 20:18:31,538 log Internal Server Error: /confirm_order/
+Traceback (most recent call last):
+  File "c:\Users\shyam\Documents\ecommerce_project\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\shyam\Documents\ecommerce_project\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\shyam\Documents\ecommerce_project\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shyam\Documents\ecommerce_project\store\views.py", line 128, in confirm_order
+    Order.objects.create(user=request.user, product=item.product, quantity=item.quantity, total_amount=item.subtotal, shipping_address="Sample Address", status="Pending")
+                                                                                                       ^^^^^^^^^^^^^
+AttributeError: 'Cart' object has no attribute 'subtotal'
+INFO 2025-07-08 20:21:27,794 autoreload C:\Users\shyam\Documents\ecommerce_project\store\views.py changed, reloading.
+INFO 2025-07-08 20:21:29,320 autoreload Watching for file changes with StatReloader
+INFO 2025-07-08 20:21:55,633 views Checkout view accessed
+WARNING 2025-07-08 20:21:55,865 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-07-08 20:21:59,410 views Home view accessed
+WARNING 2025-07-08 20:21:59,515 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-07-08 20:22:04,329 views Shoes view accessed
+WARNING 2025-07-08 20:22:04,454 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-07-08 20:22:09,236 views Add to cart accessed for product 38
+INFO 2025-07-08 20:22:09,284 views Cart detail view accessed
+WARNING 2025-07-08 20:22:09,463 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-07-08 20:22:14,507 views Remove from cart accessed for item 30
+INFO 2025-07-08 20:22:14,532 views Cart detail view accessed
+WARNING 2025-07-08 20:22:14,604 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-07-08 20:22:18,817 views Checkout view accessed
+WARNING 2025-07-08 20:22:19,016 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-07-08 20:22:28,104 views Confirm order view accessed
+INFO 2025-07-08 20:22:28,127 views Checkout view accessed
+WARNING 2025-07-08 20:22:34,680 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-07-08 20:22:46,216 views Support view accessed
+WARNING 2025-07-08 20:22:46,428 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-07-08 20:22:52,782 views Cart detail view accessed
+WARNING 2025-07-08 20:22:52,966 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-07-08 20:22:57,927 views Checkout view accessed
+WARNING 2025-07-08 20:22:58,167 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-07-08 20:23:01,404 views Confirm order view accessed
+INFO 2025-07-08 20:23:01,422 views Checkout view accessed
+INFO 2025-07-08 20:23:06,681 views Confirm order view accessed
+INFO 2025-07-08 20:23:06,707 views Checkout view accessed
+INFO 2025-07-08 20:23:38,883 views Confirm order view accessed
+INFO 2025-07-08 20:23:38,899 views Checkout view accessed
+INFO 2025-07-08 20:25:00,504 autoreload C:\Users\shyam\Documents\ecommerce_project\store\views.py changed, reloading.
+INFO 2025-07-08 20:25:01,602 autoreload Watching for file changes with StatReloader
